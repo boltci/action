@@ -1,0 +1,9 @@
+name: 'BoltCI Action'
+description: 'The action used to run the BoltCI test runner.'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - name: "Hello world"
+      run: echo "Hello world"
+      shell: bash
