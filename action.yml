@@ -12,6 +12,6 @@ runs:
   steps:
     - uses: actions/checkout@v4
     - name: Call out to docker image
-      uses: "docker://ghcr.io/boltci/boltci:0.0.7"
+      uses: "docker://ghcr.io/boltci/boltci:latest"
       with:
         args: "${{ inputs.index }}/${{ inputs.chunks }}"
