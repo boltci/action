@@ -1,5 +1,12 @@
 name: 'BoltCI Action'
 description: 'The action used to run the BoltCI test runner.'
+inputs:
+  index: 
+    description: 'Index of the chunk to run'
+    required: true
+  chunks: 
+    description: 'Number of chunks'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -7,4 +14,4 @@ runs:
     - name: Call out to docker image
       uses: "docker://ghcr.io/boltci/boltci:0.0.7"
       with:
-        args: "Matt"
+        args: "${{ inputs.index }}/${{ inputs.chunks }}"
