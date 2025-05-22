@@ -52,6 +52,7 @@ runs:
       shell: bash
       run: |
         docker run --rm \
+          --user "$(id -u):$(id -g)" \
           -v "$GITHUB_WORKSPACE:/github/workspace" \
           -w /github/workspace \
           ${{ inputs.image }} ${{ inputs.chunks }} ${{ inputs.index }} ${{ inputs.max-processes }}
