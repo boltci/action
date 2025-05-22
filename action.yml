@@ -51,6 +51,7 @@ runs:
     - name: Run BoltCI Image
       shell: bash
       run: |
+        echo "Running BoltCI image as user: $(id -u):$(id -g)"
         docker run --rm \
           --user "$(id -u):$(id -g)" \
           -v "$GITHUB_WORKSPACE:/github/workspace" \
