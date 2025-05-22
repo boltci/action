@@ -7,17 +7,43 @@ inputs:
   chunks: 
     description: 'Number of chunks'
     required: true
+  image:
+    description: 'BoltCI image to use'
+    required: true
+    default: 'ghcr.io/boltci/boltci:latest'
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
+
     - name: Composer cache
       id: composer-cache
       uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock', '*/composer.lock') }}
-    - name: Call out to docker image
-      uses: "docker://ghcr.io/boltci/boltci:latest"
+
+    - name: Cache BoltCI image
+      uses: actions/cache@v4
       with:
-        args: "${{ inputs.chunks }} ${{ inputs.index }}"
+        path: /tmp/docker-cache
+        key: ${{ runner.os }}-boltci-${{ hashFiles('') }}
+        restore-keys: docker-${{ runner.os }}-boltci-
+
+    - name: Load/Pull BoltCI image
+      shell: bash
+      run: |
+        CACHE_PATH="/tmp/docker-cache/boltci.tar"
+
+        if [ -f "$CACHE_PATH" ]; then
+          echo "Loading image from cache..."
+          docker load < "$CACHE_PATH"
+        else
+          echo "Pulling and saving image to cache..."
+          docker pull "${{ inputs.image }}"
+          docker save "${{ inputs.image }}" > "$CACHE_PATH"
+        fi
+
+    - name: Run BoltCI Image
+      shell: bash
+      run: docker run --rm "${{ inputs.image }}" "${{ inputs.chunks }}" "${{ inputs.index }}"
