@@ -14,4 +14,4 @@ runs:
     - name: Call out to docker image
       uses: "docker://ghcr.io/boltci/boltci:latest"
       with:
-        args: "${{ inputs.index }}/${{ inputs.chunks }}"
+        args: "${{ inputs.chunks }} ${{ inputs.index }}"
