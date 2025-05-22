@@ -46,7 +46,8 @@ runs:
 
     - name: Run BoltCI Image
       shell: bash
-      run: docker run --rm \
-        -v "$GITHUB_WORKSPACE:/github/workspace" \
-        -w /github/workspace \
-        ${{ inputs.image }} ${{ inputs.chunks }} ${{ inputs.index }}
+      run: |
+        docker run --rm \
+          -v "$GITHUB_WORKSPACE:/github/workspace" \
+          -w /github/workspace \
+          ${{ inputs.image }} ${{ inputs.chunks }} ${{ inputs.index }}
