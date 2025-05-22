@@ -14,7 +14,7 @@ inputs:
   image:
     description: 'BoltCI image to use'
     required: true
-    default: 'ghcr.io/boltci/boltci:1.0.14'
+    default: 'ghcr.io/boltci/boltci:1.0.15'
 runs:
   using: "composite"
   steps:
