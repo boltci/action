@@ -7,10 +7,14 @@ inputs:
   chunks: 
     description: 'Number of chunks'
     required: true
+  max-processes:
+    description: 'Maximum number of processes to run in parallel'
+    required: false
+    default: '8'
   image:
     description: 'BoltCI image to use'
     required: true
-    default: 'ghcr.io/boltci/boltci:1.0.0'
+    default: 'ghcr.io/boltci/boltci:1.0.1'
 runs:
   using: "composite"
   steps:
@@ -50,4 +54,4 @@ runs:
         docker run --rm \
           -v "$GITHUB_WORKSPACE:/github/workspace" \
           -w /github/workspace \
-          ${{ inputs.image }} ${{ inputs.chunks }} ${{ inputs.index }}
+          ${{ inputs.image }} ${{ inputs.chunks }} ${{ inputs.index }} ${{ inputs.max-processes }}
