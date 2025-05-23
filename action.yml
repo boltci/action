@@ -27,26 +27,26 @@ runs:
         path: vendor
         key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock', '*/composer.lock') }}
 
-    - name: Cache BoltCI image
-      uses: actions/cache@v4
-      with:
-        path: /tmp/boltci.tar
-        key: ${{ runner.os }}-boltci-${{ inputs.image }}
-        restore-keys: docker-${{ runner.os }}-boltci-
+    # - name: Cache BoltCI image
+    #   uses: actions/cache@v4
+    #   with:
+    #     path: /tmp/boltci.tar
+    #     key: ${{ runner.os }}-boltci-${{ inputs.image }}
+    #     restore-keys: docker-${{ runner.os }}-boltci-
 
-    - name: Load/Pull BoltCI image
-      shell: bash
-      run: |
-        CACHE_PATH="/tmp/boltci.tar"
+    # - name: Load/Pull BoltCI image
+    #   shell: bash
+    #   run: |
+    #     CACHE_PATH="/tmp/boltci.tar"
 
-        if [ -f "$CACHE_PATH" ]; then
-          echo "Loading image from cache..."
-          docker load < "$CACHE_PATH"
-        else
-          echo "Pulling and saving image to cache..."
-          docker pull "${{ inputs.image }}"
-          docker save "${{ inputs.image }}" > "$CACHE_PATH"
-        fi
+    #     if [ -f "$CACHE_PATH" ]; then
+    #       echo "Loading image from cache..."
+    #       docker load < "$CACHE_PATH"
+    #     else
+    #       echo "Pulling and saving image to cache..."
+    #       docker pull "${{ inputs.image }}"
+    #       docker save "${{ inputs.image }}" > "$CACHE_PATH"
+    #     fi
 
     - name: Run BoltCI Image
       shell: bash
