@@ -25,7 +25,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: vendor
-        key: ${{ runner.os }}-${{ inputs.image }}-composer-${{ hashFiles('composer.lock', '*/composer.lock') }}
+        key: ${{ runner.os }}-${{ inputs.image }}-composer-${{ hashFiles('composer.lock') }}
 
     - name: MySQL cache
       id: mysql-cache
