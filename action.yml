@@ -14,7 +14,7 @@ inputs:
   image:
     description: 'BoltCI image to use'
     required: true
-    default: 'ghcr.io/boltci/boltci:1.0.19'
+    default: 'ghcr.io/boltci/boltci:1.1.19'
 runs:
   using: "composite"
   steps:
@@ -25,28 +25,36 @@ runs:
       uses: actions/cache@v4
       with:
         path: vendor
-        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock', '*/composer.lock') }}
+        key: ${{ runner.os }}-${{ inputs.image }}-composer-${{ hashFiles('composer.lock', '*/composer.lock') }}
 
-    # - name: Cache BoltCI image
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: /tmp/boltci.tar
-    #     key: ${{ runner.os }}-boltci-${{ inputs.image }}
-    #     restore-keys: docker-${{ runner.os }}-boltci-
+    - name: MySQL cache
+      id: mysql-cache
+      uses: actions/cache@v4
+      with:
+        path: boltci-mysql-data
+        key: ${{ runner.os }}-${{ inputs.image }}-mysql-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
 
-    # - name: Load/Pull BoltCI image
-    #   shell: bash
-    #   run: |
-    #     CACHE_PATH="/tmp/boltci.tar"
 
-    #     if [ -f "$CACHE_PATH" ]; then
-    #       echo "Loading image from cache..."
-    #       docker load < "$CACHE_PATH"
-    #     else
-    #       echo "Pulling and saving image to cache..."
-    #       docker pull "${{ inputs.image }}"
-    #       docker save "${{ inputs.image }}" > "$CACHE_PATH"
-    #     fi
+    - name: Cache BoltCI image
+      uses: actions/cache@v4
+      with:
+        path: /tmp/boltci.tar
+        key: ${{ runner.os }}-boltci-${{ inputs.image }}
+        restore-keys: docker-${{ runner.os }}-boltci-
+
+    - name: Load/Pull BoltCI image
+      shell: bash
+      run: |
+        CACHE_PATH="/tmp/boltci.tar"
+
+        if [ -f "$CACHE_PATH" ]; then
+          echo "Loading image from cache..."
+          docker load < "$CACHE_PATH"
+        else
+          echo "Pulling and saving image to cache..."
+          docker pull "${{ inputs.image }}"
+          docker save "${{ inputs.image }}" > "$CACHE_PATH"
+        fi
 
     - name: Run BoltCI Image
       shell: bash
