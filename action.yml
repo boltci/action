@@ -14,7 +14,7 @@ inputs:
   image:
     description: 'BoltCI image to use'
     required: true
-    default: 'ghcr.io/boltci/boltci:1.1.19'
+    default: 'ghcr.io/boltci/boltci:1.1.9'
 runs:
   using: "composite"
   steps:
@@ -34,19 +34,17 @@ runs:
         path: boltci-mysql-data
         key: ${{ runner.os }}-${{ inputs.image }}-mysql-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
 
-
     - name: Cache BoltCI image
       uses: actions/cache@v4
       with:
-        path: /tmp/boltci.tar
+        path: boltci-image.tar
         key: ${{ runner.os }}-boltci-${{ inputs.image }}
         restore-keys: docker-${{ runner.os }}-boltci-
 
     - name: Load/Pull BoltCI image
       shell: bash
       run: |
-        CACHE_PATH="/tmp/boltci.tar"
-
+        CACHE_PATH="boltci-image.tar"
         if [ -f "$CACHE_PATH" ]; then
           echo "Loading image from cache..."
           docker load < "$CACHE_PATH"
