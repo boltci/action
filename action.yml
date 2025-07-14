@@ -31,8 +31,22 @@ runs:
       id: mysql-cache
       uses: actions/cache@v4
       with:
-        path: boltci-mysql-data
+        path: boltci/cache/mysql
         key: ${{ runner.os }}-${{ inputs.image }}-mysql-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
+    
+    - name: MariaDB cache
+      id: mariadb-cache
+      uses: actions/cache@v4
+      with:
+        path: boltci/cache/mariadb
+        key: ${{ runner.os }}-${{ inputs.image }}-mariadb-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
+
+    - name: PostgreSQL cache
+      id: pgsql-cache
+      uses: actions/cache@v4
+      with:
+        path: boltci/cache/pgsql
+        key: ${{ runner.os }}-${{ inputs.image }}-pgsql-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
 
     - name: Cache BoltCI image
       if: ${{ runner.environment == 'github-hosted' }}
