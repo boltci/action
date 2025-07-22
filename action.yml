@@ -69,6 +69,14 @@ runs:
           docker save "${{ inputs.image }}" > "$CACHE_PATH"
         fi
 
+    - name: Check entrypoint
+      shell: bash
+      run: file entrypoint.bin
+
+    - name: Check container architecture
+      shell: bash
+      run: docker run --rm --platform=linux/amd64 busybox uname -m
+
     - name: Run BoltCI Image
       shell: bash
       run: |
