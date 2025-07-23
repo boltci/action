@@ -20,6 +20,12 @@ runs:
   steps:
     - uses: actions/checkout@v4
 
+    - name: Create cache directory
+      shell: bash
+      run: |
+          mkdir -p /boltci/cache
+          echo "Cache directory created at /boltci/cache"
+
     - name: Composer cache
       id: composer-cache
       uses: actions/cache@v4
