@@ -31,35 +31,35 @@ runs:
       id: mysql-cache
       uses: actions/cache@v4
       with:
-        path: boltci/cache/mysql
+        path: /boltci/cache/mysql
         key: ${{ runner.os }}-${{ inputs.image }}-mysql-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
     
     - name: MariaDB cache
       id: mariadb-cache
       uses: actions/cache@v4
       with:
-        path: boltci/cache/mariadb
+        path: /boltci/cache/mariadb
         key: ${{ runner.os }}-${{ inputs.image }}-mariadb-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
 
     - name: PostgreSQL cache
       id: pgsql-cache
       uses: actions/cache@v4
       with:
-        path: boltci/cache/pgsql
+        path: /boltci/cache/pgsql
         key: ${{ runner.os }}-${{ inputs.image }}-pgsql-${{ hashFiles('database/migrations/*', 'app/**/Database/Migrations/*') }}
 
     - name: Cache BoltCI image
       if: ${{ runner.environment == 'github-hosted' }}
       uses: actions/cache@v4
       with:
-        path: boltci-image.tar
+        path: /boltci/cache/image.tar
         key: ${{ runner.os }}-boltci-${{ inputs.image }}
         restore-keys: docker-${{ runner.os }}-boltci-
 
     - name: Load/Pull BoltCI image
       shell: bash
       run: |
-        CACHE_PATH="boltci-image.tar"
+        CACHE_PATH="/boltci/cache/image.tar"
         if [ -f "$CACHE_PATH" ]; then
           echo "Loading image from cache..."
           docker load < "$CACHE_PATH"
