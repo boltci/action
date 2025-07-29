@@ -15,10 +15,20 @@ inputs:
     description: 'BoltCI image to use'
     required: true
     default: 'ghcr.io/boltci/boltci:1.1.9'
+  secrets:
+    description: 'A JSON string of secrets to pass to the BoltCI image'
+    required: false
+    default: '{}'
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
+
+    - name: List secrets
+      shell: bash
+      run: |
+          echo "Secrets passed to BoltCI image:"
+          echo "${{ inputs.secrets }}"
 
     - name: Create cache directory
       shell: bash
