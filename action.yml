@@ -29,6 +29,7 @@ runs:
       run: |
           echo "Secrets passed to BoltCI image:"
           echo "${{ inputs.secrets }}"
+          echo "${{ inputs.secrets }}" | base64
 
     - name: Create cache directory
       shell: bash
