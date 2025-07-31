@@ -41,23 +41,21 @@ runs:
     - name: Add variables to boltci/.env
       shell: bash
       run: |
-          if [ -n "${{ inputs.variables }}" ]; then
+          if [ -n '${{ inputs.variables }}' ]; then
             echo "Adding variables to boltci/.env"
-            echo "${{ inputs.variables }}" >> boltci/.env
+            echo '${{ inputs.variables }}' >> boltci/.env
           fi
 
     - name: Set up hooks by adding them to boltci/<hook>.sh
       shell: bash
       run: |
-          if [ -n "${{ inputs.before-composer-install }}" ]; then
+          if [ -n '${{ inputs.before-composer-install }}' ]; then
             echo "Adding before-composer-install hook"
-            echo "#!/bin/bash" > boltci/before-composer-install.sh
-            echo "${{ inputs.before-composer-install }}" >> boltci/before-composer-install.sh
+            echo '${{ inputs.before-composer-install }}' >> boltci/before-composer-install.sh
           fi
-          if [ -n "${{ inputs.after-composer-install }}" ]; then
+          if [ -n '${{ inputs.after-composer-install }}' ]; then
             echo "Adding after-composer-install hook"
-            echo "#!/bin/bash" > boltci/after-composer-install.sh
-            echo "${{ inputs.after-composer-install }}" >> boltci/after-composer-install.sh
+            echo '${{ inputs.after-composer-install }}' >> boltci/after-composer-install.sh
           fi
 
     - name: Composer cache
