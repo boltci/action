@@ -107,6 +107,20 @@ runs:
           docker save "${{ inputs.image }}" > "$CACHE_PATH"
         fi
 
+    - name: Debug
+      shell: bash
+      run: |
+        echo "Running BoltCI with the following parameters:"
+        echo "Image: ${{ inputs.image }}"
+        echo "Chunks: ${{ inputs.chunks }}"
+        echo "Index: ${{ inputs.index }}"
+        echo "Max Processes: ${{ inputs.max-processes }}"
+        echo "Variables: ${{ inputs.variables }}"
+        echo "Before Composer Install: ${{ inputs.before-composer-install }}"
+        echo "After Composer Install: ${{ inputs.after-composer-install }}"
+        echo "GitHub Workspace: $GITHUB_WORKSPACE"
+        ls -la $GITHUB_WORKSPACE
+
     - name: Run BoltCI Image
       shell: bash
       run: |
